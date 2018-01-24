@@ -254,10 +254,18 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
 
 ARG INSTALL_SWOOLE=false
 RUN if [ ${INSTALL_SWOOLE} = true ]; then \
-    # Install Php Swoole Extension
-    pecl -q install swoole && \
-    echo "extension=swoole.so" >> /etc/php/7.1/mods-available/swoole.ini && \
-    ln -s /etc/php/7.1/mods-available/swoole.ini /etc/php/7.1/cli/conf.d/20-swoole.ini \
+    curl -L -o /tmp/swoole.tar.gz "https://codeload.github.com/swoole/swoole-src/tar.gz/v2.0.12" \
+    && mkdir -p swoole \
+    && tar -C swoole -zxvf /tmp/swoole.tar.gz --strip 1 \
+    && ( \
+        cd swoole \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r swoole \
+    && rm /tmp/swoole.tar.gz \
 ;fi
 
 #####################################

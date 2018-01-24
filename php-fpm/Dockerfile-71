@@ -117,9 +117,18 @@ RUN if [ ${INSTALL_PHPREDIS} = true ]; then \
 
 ARG INSTALL_SWOOLE=false
 RUN if [ ${INSTALL_SWOOLE} = true ]; then \
-    # Install Php Swoole Extension
-    pecl install swoole \
-    &&  docker-php-ext-enable swoole \
+    curl -L -o /tmp/swoole.tar.gz "https://codeload.github.com/swoole/swoole-src/tar.gz/v2.0.12" \
+    && mkdir -p swoole \
+    && tar -C swoole -zxvf /tmp/swoole.tar.gz --strip 1 \
+    && ( \
+        cd swoole \
+        && phpize \
+        && ./configure \
+        && make \
+        && make install \
+    ) \
+    && rm -r swoole \
+    && rm /tmp/swoole.tar.gz \
 ;fi
 
 #####################################
