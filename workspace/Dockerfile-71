@@ -263,6 +263,7 @@ RUN if [ ${INSTALL_SWOOLE} = true ]; then \
         && ./configure \
         && make \
         && make install \
+        && echo "extension=swoole.so" >> /etc/php/7.1/cli/php.ini \
     ) \
     && rm -r swoole \
     && rm /tmp/swoole.tar.gz \
