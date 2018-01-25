@@ -100,6 +100,9 @@ services:
         - ./php-fpm/php${PHP_VERSION}.ini:/usr/local/etc/php/php.ini
       expose:
         - "9000"
+        - "9500"
+      ports:
+        - "9501:9501"
       depends_on:
         - workspace
       extra_hosts:
