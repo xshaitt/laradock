@@ -477,6 +477,19 @@ RUN if [ ${INSTALL_DEPLOYER} = true ]; then \
 ;fi
 
 #####################################
+# 修改中国镜像
+#####################################
+USER laradock
+
+ARG CHANGE_IMAGE=false
+ENV CHANGE_IMAGE ${CHANGE_IMAGE}
+
+RUN if [ ${CHANGE_IMAGE} = true ]; then \
+    #修改中国镜像
+    composer config -g repo.packagist composer https://packagist.phpcomposer.com \
+;fi
+
+#####################################
 # Linuxbrew:
 #####################################
 USER root
